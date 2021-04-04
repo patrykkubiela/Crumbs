@@ -9,7 +9,7 @@ namespace Crumbs.Core
         {
             Receive<Crumb>(crumb =>
             {
-                Console.WriteLine($"Name of crumb: {crumb.Name}");
+                Console.WriteLine($"Name of crumb: ");
             });
         }
     }

@@ -1,12 +1,12 @@
+using System;
+
 namespace Crumbs.Core
 {
-    public class Crumb
+    public class Crumb : CrumbBase
     {
-        public string Name { get; private set; }
-
-        public Crumb(string name)
+        public override void Receive()
         {
-            Name = name;
+            Console.Write("this is message from within crumb");
         }
     }
 }
