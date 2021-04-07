@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Akka.Actor;
 
 namespace Crumbs.Core
 {
-    public abstract class CrumbBase : ICrumb
+    public abstract class CrumbBase : ReceiveActor, ICrumb
     {
         public Guid Uuid { get; }
         public string Name { get; set; }
@@ -16,6 +17,8 @@ namespace Crumbs.Core
         {
             Uuid = Guid.NewGuid();
             Observers = new List<ICrumb>();
+            
+            Receive<Crumb>(RegisterObserver);
         }
 
         public abstract void Receive();
