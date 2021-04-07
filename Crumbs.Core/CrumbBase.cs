@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Crumbs.Core.Broadcasting;
 
 namespace Crumbs.Core
 {
@@ -41,8 +40,20 @@ namespace Crumbs.Core
         {
             var result = new List<ICrumb>();
             result.Add(this);
+            result.AddRange(GetObservers(Observers));
+            return result;
+        }
 
-            Observers.ForEach(o => result.Add(o));
+        private List<ICrumb> GetObservers(IEnumerable<ICrumb> observers)
+        {
+            var result = new List<ICrumb>();
+            
+
+            foreach (var observer in observers)
+            {
+                result.Add(observer);
+                result.AddRange(GetObservers(observer.Observers));
+            }
 
             return result;
         }
