@@ -10,7 +10,7 @@ namespace Crumbs.Core.Tests
         [Fact]
         public void AssignedObserver_IntoCrumb_Broadcast_Call_Receive()
         {
-            var observerMock = new Mock<IObserver>();
+            var observerMock = new Mock<ICrumb>();
             observerMock.Setup(o => o.Receive());
 
             var broadcaster = new Crumb();
