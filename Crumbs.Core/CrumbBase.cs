@@ -39,7 +39,12 @@ namespace Crumbs.Core
 
         public IEnumerable<ICrumb> GetBranch()
         {
-            throw new NotImplementedException();
+            var result = new List<ICrumb>();
+            result.Add(this);
+            
+            Observers.ForEach(o => result.Add(o));
+            
+            return result;
         }
 
         public IEnumerable<ICrumb> GetWholeChain()
