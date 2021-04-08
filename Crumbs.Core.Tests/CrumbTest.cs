@@ -58,26 +58,26 @@ namespace Crumbs.Core.Tests
             var crumbA_B = new Crumb();
             //C
             var crumbC = new Crumb();
-            
+
             crumbRoot.RegisterObserver(crumbA);
             crumbRoot.RegisterObserver(crumbC);
-            
+
             crumbA.RegisterObserver(crumbA_A);
             crumbA.RegisterObserver(crumbA_B);
-            
+
             //act
             var crumbABranch = crumbA.GetBranch().ToArray();
             var crumbCBranch = crumbC.GetBranch().ToArray();
-            
+
             Assert.Equal(3, crumbABranch.Length);
             Assert.Contains(crumbA, crumbABranch);
             Assert.Contains(crumbA_A, crumbABranch);
             Assert.Contains(crumbA_B, crumbABranch);
-            
+
             Assert.Single(crumbCBranch);
             Assert.Contains(crumbC, crumbCBranch);
         }
-        
+
         [Fact]
         public void GetBranch_OK_WithNoRoot_AlsoSecondLineInheriting()
         {
@@ -90,20 +90,20 @@ namespace Crumbs.Core.Tests
             var crumbB_C_A = new Crumb();
             //C
             var crumbC = new Crumb();
-            
+
             crumbRoot.RegisterObserver(crumbB);
             crumbRoot.RegisterObserver(crumbC);
-            
+
             crumbB.RegisterObserver(crumbB_A);
             crumbB.RegisterObserver(crumbB_B);
-            
+
             crumbB_C.RegisterObserver(crumbB_C_A);
             crumbB.RegisterObserver(crumbB_C);
 
             //act
             var crumbBBranch = crumbB.GetBranch().ToArray();
             var crumbCBranch = crumbC.GetBranch().ToArray();
-            
+
             Assert.Equal(5, crumbBBranch.Length);
             Assert.Contains(crumbB, crumbBBranch);
             Assert.Contains(crumbB_A, crumbBBranch);
@@ -113,6 +113,71 @@ namespace Crumbs.Core.Tests
 
             Assert.Single(crumbCBranch);
             Assert.Contains(crumbC, crumbCBranch);
+        }
+
+        [Fact]
+        public void GetWholeChain_ReturnAllCrumbs_RelatedTo_Selected_One()
+        {
+            var crumbRoot = new Crumb();
+            //B
+            var crumbB = new Crumb();
+            var crumbB_A = new Crumb();
+            var crumbB_B = new Crumb();
+            var crumbB_C = new Crumb();
+            var crumbB_C_A = new Crumb();
+            //C
+            var crumbC = new Crumb();
+
+            crumbRoot.RegisterObserver(crumbB);
+            crumbRoot.RegisterObserver(crumbC);
+
+            crumbB.RegisterObserver(crumbB_A);
+            crumbB.RegisterObserver(crumbB_B);
+
+            crumbB_C.RegisterObserver(crumbB_C_A);
+            crumbB.RegisterObserver(crumbB_C);
+
+            //act
+            var crumbChain = crumbB.GetWholeChain().ToArray();
+
+            Assert.Equal(6, crumbChain.Length);
+            Assert.Contains(crumbRoot, crumbChain);
+            Assert.Contains(crumbB, crumbChain);
+            Assert.Contains(crumbB_A, crumbChain);
+            Assert.Contains(crumbB_B, crumbChain);
+            Assert.Contains(crumbB_C, crumbChain);
+            Assert.Contains(crumbB_C_A, crumbChain);
+        }
+
+        [Fact]
+        public void GetWholeChain_ReturnCrumbsRelatedTo_Selected_WithNoSideOnes()
+        {
+            var crumbRoot = new Crumb() {Name = "root"};
+            //B
+            var crumbB = new Crumb() {Name = "B"};
+            var crumbB_A = new Crumb() {Name = "B_A"};
+            var crumbB_B = new Crumb();
+            var crumbB_C = new Crumb();
+            var crumbB_C_A = new Crumb();
+            //C
+            var crumbC = new Crumb();
+
+            crumbRoot.RegisterObserver(crumbB);
+            crumbRoot.RegisterObserver(crumbC);
+
+            crumbB.RegisterObserver(crumbB_A);
+            crumbB.RegisterObserver(crumbB_B);
+
+            crumbB_C.RegisterObserver(crumbB_C_A);
+            crumbB.RegisterObserver(crumbB_C);
+
+            //act
+            var crumbChain = crumbB_A.GetWholeChain().ToArray();
+
+            Assert.Equal(3, crumbChain.Length);
+            Assert.Contains(crumbRoot, crumbChain);
+            Assert.Contains(crumbB, crumbChain);
+            Assert.Contains(crumbB_A, crumbChain);
         }
     }
 }

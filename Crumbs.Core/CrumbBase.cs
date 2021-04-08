@@ -4,12 +4,13 @@ using Akka.Actor;
 
 namespace Crumbs.Core
 {
-    public abstract class CrumbBase : ReceiveActor, ICrumb
+    public abstract class CrumbBase : ICrumb
     {
         public Guid Uuid { get; }
         public string Name { get; set; }
         public string Description { get; set; }
         public CrumbType Type { get; set; }
+        public ICrumb Broadcaster { get; set; }
         public List<ICrumb> Observers { get; }
 
 
@@ -17,8 +18,8 @@ namespace Crumbs.Core
         {
             Uuid = Guid.NewGuid();
             Observers = new List<ICrumb>();
-            
-            Receive<Crumb>(RegisterObserver);
+
+            // Receive<Crumb>(RegisterObserver);
         }
 
         public abstract void Receive();
@@ -27,6 +28,7 @@ namespace Crumbs.Core
         public virtual void RegisterObserver(ICrumb observer)
         {
             Observers.Add(observer);
+            observer.Broadcaster = this;
         }
 
         public virtual void UnregisterObserver(ICrumb observer)
@@ -41,16 +43,20 @@ namespace Crumbs.Core
 
         public IEnumerable<ICrumb> GetBranch()
         {
+            return Branch();
+        }
+
+        public IEnumerable<ICrumb> GetWholeChain()
+        {
             var result = new List<ICrumb>();
-            result.Add(this);
-            result.AddRange(GetObservers(Observers));
+            result.AddRange(Branch());
+            result.AddRange(Chain());
             return result;
         }
 
-        private List<ICrumb> GetObservers(IEnumerable<ICrumb> observers)
+        private IEnumerable<ICrumb> GetObservers(IEnumerable<ICrumb> observers)
         {
             var result = new List<ICrumb>();
-            
 
             foreach (var observer in observers)
             {
@@ -61,9 +67,29 @@ namespace Crumbs.Core
             return result;
         }
 
-        public IEnumerable<ICrumb> GetWholeChain()
+        private IEnumerable<ICrumb> Chain()
         {
-            throw new NotImplementedException();
+            return GetBroadcasters(this);
+        }
+
+        private IEnumerable<ICrumb> GetBroadcasters(ICrumb observer)
+        {
+            var result = new List<ICrumb>();
+            if (observer?.Broadcaster != null)
+            {
+                result.Add(observer.Broadcaster);
+                result.AddRange(GetBroadcasters(observer.Broadcaster));
+            }
+
+            return result;
+        }
+
+        private IEnumerable<ICrumb> Branch()
+        {
+            var result = new List<ICrumb>();
+            result.Add(this);
+            result.AddRange(GetObservers(Observers));
+            return result;
         }
     }
 }

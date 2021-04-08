@@ -10,6 +10,7 @@ namespace Crumbs.Core
         string Name { get; set; }
         string Description { get; set; }
         CrumbType Type { get; set; }
+        ICrumb Broadcaster { get; set; }
 
         IEnumerable<ICrumb> GetBranch();
         IEnumerable<ICrumb> GetWholeChain();
