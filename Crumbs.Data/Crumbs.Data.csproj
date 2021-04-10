@@ -4,4 +4,13 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.78" />
+      <PackageReference Include="Npgsql" Version="6.0.0-preview2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Crumbs.Shared\Crumbs.Shared.csproj" />
+    </ItemGroup>
+
 </Project>
