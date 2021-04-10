@@ -1,4 +1,4 @@
-﻿namespace Crumbs.Core
+﻿namespace Crumbs.Shared
 {
     public enum CrumbType
     {

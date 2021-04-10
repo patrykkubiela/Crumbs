@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Crumbs.Shared;
 
 namespace Crumbs.Core
 {
