@@ -20,14 +20,13 @@ namespace Crumbs.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddScoped<PostgresDbConnectionProvider>();
             services.AddScoped<ICrumbsRepository, CrumbsRepository>();
-            
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Crumbs.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Crumbs.Api", Version = "v1"});
             });
         }
 
@@ -41,15 +40,9 @@ namespace Crumbs.Api
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
