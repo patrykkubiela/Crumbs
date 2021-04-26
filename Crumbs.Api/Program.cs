@@ -18,7 +18,7 @@ namespace Crumbs.Api
 
             using (var scope = serviceProvider.CreateScope())
             {
-                UpdateDatabase(scope.ServiceProvider);
+                //UpdateDatabase(scope.ServiceProvider);
             }
         }
         private static IServiceProvider CreateServices()
