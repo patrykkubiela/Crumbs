@@ -21,7 +21,6 @@ namespace Crumbs.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<PostgresDbConnectionProvider>();
             services.AddScoped<ICrumbsRepository, CrumbsRepository>();
 
             services.AddSwaggerGen(c =>

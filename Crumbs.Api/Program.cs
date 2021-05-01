@@ -5,6 +5,7 @@ using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
 
 namespace Crumbs.Api
 {
@@ -18,7 +19,7 @@ namespace Crumbs.Api
 
             using (var scope = serviceProvider.CreateScope())
             {
-                //UpdateDatabase(scope.ServiceProvider);
+                UpdateDatabase(scope.ServiceProvider);
             }
         }
         private static IServiceProvider CreateServices()
@@ -27,7 +28,7 @@ namespace Crumbs.Api
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     .AddPostgres10_0()
-                    .WithGlobalConnectionString(Settings.ConnectionString)
+                    .WithGlobalConnectionString(PostgresDbConnectionProvider.GetDbConnectionString())
                     .ScanIn(typeof(AddLogTable).Assembly).For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);
