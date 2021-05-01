@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.78" />
+      <PackageReference Include="FluentMigrator" Version="3.2.15" />
+      <PackageReference Include="FluentMigrator.Extensions.Postgres" Version="3.2.15" />
+      <PackageReference Include="FluentMigrator.Runner" Version="3.2.15" />
+      <PackageReference Include="FluentMigrator.Runner.Postgres" Version="3.2.15" />
+      <PackageReference Include="FluentMigrator.Tools" Version="3.2.15" />
+      <PackageReference Include="Npgsql" Version="6.0.0-preview2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Crumbs.Shared\Crumbs.Shared.csproj" />
+    </ItemGroup>
+
+</Project>

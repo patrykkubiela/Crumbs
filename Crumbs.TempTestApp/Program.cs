@@ -10,7 +10,7 @@ namespace Crumbs.TempTestApp
         {
             var system = ActorSystem.Create("ActorSystem");
             var crumbActor = system.ActorOf<CrumbActor>("crumb");
-            crumbActor.Tell(new Crumb("my special name"));
+            crumbActor.Tell(new Crumb());
 
             Console.Read();
         }
