@@ -4,10 +4,10 @@ namespace Crumbs.Core.Broadcasting
 {
     public interface IBroadcast
     {
-        List<IObserver> Observers { get; }
+        List<ICrumb> Observers { get; }
         
-        void RegisterObserver(IObserver observer);
-        void UnregisterObserver(IObserver observer);
+        void RegisterObserver(ICrumb observer);
+        void UnregisterObserver(ICrumb observer);
         void Broadcast();
     }
 }
