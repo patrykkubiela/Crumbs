@@ -1,3 +1,4 @@
+using System.Data;
 using FluentMigrator;
 
 namespace Crumbs.Data.Migrations
@@ -7,14 +8,19 @@ namespace Crumbs.Data.Migrations
     {
         public override void Up()
         {
-            Create.Table("Log")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("Text").AsString();
+            Execute.WithConnection(CustomConnection);
         }
 
         public override void Down()
         {
             Delete.Table("Log");
+        }
+
+        private void CustomConnection(IDbConnection arg1, IDbTransaction arg2)
+        {
+            Create.Table("Log")
+                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
+                .WithColumn("Text").AsString();
         }
     }
 }
