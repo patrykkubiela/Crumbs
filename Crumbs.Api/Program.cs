@@ -13,14 +13,14 @@ namespace Crumbs.Api
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
-            
             var serviceProvider = CreateServices();
 
             using (var scope = serviceProvider.CreateScope())
             {
                 UpdateDatabase(scope.ServiceProvider);
             }
+            
+            CreateHostBuilder(args).Build().Run();
         }
         private static IServiceProvider CreateServices()
         {
