@@ -22,13 +22,16 @@ namespace Crumbs.Api
             
             CreateHostBuilder(args).Build().Run();
         }
+        
         private static IServiceProvider CreateServices()
         {
+            var npgsqlConnectionString = PostgresDbConnectionProvider.GetDbConnectionString();
+            
             return new ServiceCollection()
                 .AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     .AddPostgres10_0()
-                    .WithGlobalConnectionString(PostgresDbConnectionProvider.GetDbConnectionString())
+                    .WithGlobalConnectionString("Server=172.18.0.2;Port=5432;Database=postgres;User Id=postgres;Password=PostgresPassword14$;")
                     .ScanIn(typeof(AddLogTable).Assembly).For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);
