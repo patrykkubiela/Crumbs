@@ -6,11 +6,15 @@ namespace Crumbs.Data.Models
 {
     public class Crumb
     {
+        public long Id { get; set; }
         public Guid Uuid { get; }
         public string Name { get; set; }
         public string Description { get; set; }
         public CrumbType Type { get; set; }
-        public Crumb Broadcaster { get; set; }
-        public ICollection<Crumb> Observers { get; }
+        
+        public long BroadcasterId { get; set; }
+        public virtual Crumb Broadcaster { get; set; }
+        
+        public virtual ICollection<Crumb> Observers { get; }
     }
 }
