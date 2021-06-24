@@ -8,19 +8,14 @@ namespace Crumbs.Data.Migrations
     {
         public override void Up()
         {
-            Execute.WithConnection(CustomConnection);
+            Create.Table("Log")
+                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
+                .WithColumn("Text").AsString();
         }
 
         public override void Down()
         {
             Delete.Table("Log");
-        }
-
-        private void CustomConnection(IDbConnection arg1, IDbTransaction arg2)
-        {
-            Create.Table("Log")
-                .WithColumn("Id").AsInt64().PrimaryKey().Identity()
-                .WithColumn("Text").AsString();
         }
     }
 }
