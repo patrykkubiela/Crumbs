@@ -5,6 +5,6 @@ namespace Crumbs.Data.Repositories
 {
     public interface ICrumbsRepository
     {
-        ICollection<Crumb> GetCrumbs(string query);
+        ICollection<Crumb> GetAllCrumbs();
     }
 }
