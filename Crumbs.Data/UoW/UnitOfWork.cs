@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Crumbs.Data.Interfaces;
+using Crumbs.Data.Models;
 using Crumbs.Data.Repositories;
 
 namespace Crumbs.Data.UoW
@@ -10,7 +11,7 @@ namespace Crumbs.Data.UoW
         private readonly CrumbsDbContext _dbContext;
 
         private ICrumbsRepository _crumbsRepository;
-        public ICrumbsRepository CrumbsRepository => _crumbsRepository ??= new CrumbsRepository();
+        public ICrumbsRepository CrumbsRepository => _crumbsRepository ??= new CrumbsRepository<Crumb>();
 
         public UnitOfWork(CrumbsDbContext dbContext)
         {
