@@ -5,6 +5,8 @@ using System.Net.Security;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using Crumbs.Data;
+using Crumbs.Data.Interfaces;
+using Crumbs.Data.UoW;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -69,6 +71,8 @@ namespace Crumbs.Api
             });
 
             services.AddMediatR(loadedAssemblies);
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             services.AddSwaggerGen(c =>
             {
