@@ -5,9 +5,9 @@ services:
     container_name: postgres_crumbs
     hostname: postgres
     environment:
-      POSTGRES_PASSWORD: PostgresPassword14$
+      POSTGRES_PASSWORD: PostgresPassword14$$
     ports:
-      - "5432:5432"
+      - "15432:5432"
     networks:
       - es_network
     healthcheck:
