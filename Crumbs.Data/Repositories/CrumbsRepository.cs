@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Crumbs.Data.Interfaces;
 using Crumbs.Data.Models;
 
 namespace Crumbs.Data.Repositories
