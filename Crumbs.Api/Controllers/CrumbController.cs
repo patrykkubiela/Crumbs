@@ -17,7 +17,7 @@ namespace Crumbs.Api.Controllers
         [HttpGet]
         public IActionResult GetTest()
         {
-            var crumbs = _unitOfWork.CrumbsRepository.GetAllCrumbs();
+            var crumbs = _unitOfWork.CrumbsRepository.GetAllEntities();
             return Ok(crumbs);
         }
     }

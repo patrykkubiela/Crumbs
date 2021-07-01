@@ -6,7 +6,7 @@ namespace Crumbs.Data.Repositories
 {
     public class CrumbsRepository<T> : Repository<T>, ICrumbsRepository
     {
-        public ICollection<Crumb> GetAllCrumbs()
+        public ICollection<Crumb> GetAllEntities()
         {
             return GetEntities<Crumb>("SELECT * FROM public.\"Crumbs\"");
         }
