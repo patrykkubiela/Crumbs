@@ -1,13 +1,22 @@
 using System;
+using Microsoft.Extensions.Configuration;
 using Npgsql;
 
 namespace Crumbs.Data
 {
-    public static class PostgresDbConnectionProvider
+    public class PostgresDbConnectionProvider
     {
+        public static ServiceConfiguration _serviceConfiguration;
+        
+        public PostgresDbConnectionProvider(IConfiguration configuration)
+        {
+            _serviceConfiguration = configuration.GetSection(nameof(ServiceConfiguration))
+                .Get<ServiceConfiguration>();
+        }
+        
         public static NpgsqlConnection GetDbConnection()
         {
-            return new NpgsqlConnection(GetDbConnectionString());
+            return new NpgsqlConnection(_serviceConfiguration.Database.ConnectionString);
         }
 
         public static string GetDbConnectionString()
