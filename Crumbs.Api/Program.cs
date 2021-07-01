@@ -1,46 +1,29 @@
 using System;
-using Crumbs.Data;
-using Crumbs.Data.Migrations;
-using FluentMigrator.Runner;
+using System.Runtime.ExceptionServices;
+using System.Security;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Npgsql;
 
 namespace Crumbs.Api
 {
     public class Program
     {
+        private static readonly NLog.ILogger Logger;
+
+        static Program()
+        {
+            Logger = NLog.LogManager.GetCurrentClassLogger();
+
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+            TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+            
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+        }
+
         public static void Main(string[] args)
         {
-            var serviceProvider = CreateServices();
-
-            using (var scope = serviceProvider.CreateScope())
-            {
-                UpdateDatabase(scope.ServiceProvider);
-            }
-            
             CreateHostBuilder(args).Build().Run();
-        }
-        
-        private static IServiceProvider CreateServices()
-        {
-            var npgsqlConnectionString = PostgresDbConnectionProvider.GetDbConnectionString();
-            
-            return new ServiceCollection()
-                .AddFluentMigratorCore()
-                .ConfigureRunner(rb => rb
-                    .AddPostgres10_0()
-                    .WithGlobalConnectionString("Server=172.18.0.2;Port=5432;Database=postgres;User Id=postgres;Password=PostgresPassword14$;")
-                    .ScanIn(typeof(AddLogTable).Assembly).For.Migrations())
-                .AddLogging(lb => lb.AddFluentMigratorConsole())
-                .BuildServiceProvider(false);
-        }
-
-        private static void UpdateDatabase(IServiceProvider serviceProvider)
-        {
-            var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-            runner.MigrateUp();
         }
         
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -49,5 +32,29 @@ namespace Crumbs.Api
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+        
+        
+        [SecurityCritical]
+        [HandleProcessCorruptedStateExceptions]
+        private static void OnUnhandledException(object eventSender, UnhandledExceptionEventArgs exceptionEventArgs)
+        {
+            Logger.Fatal(exceptionEventArgs.ExceptionObject as Exception);
+
+            NLog.LogManager.Shutdown();
+
+            Environment.Exit(1);
+        }
+
+        [SecurityCritical]
+        [HandleProcessCorruptedStateExceptions]
+        private static void OnUnobservedTaskException(object eventSender,
+            UnobservedTaskExceptionEventArgs exceptionEventArgs)
+        {
+            Logger.Fatal(exceptionEventArgs.Exception);
+
+            NLog.LogManager.Shutdown();
+
+            Environment.Exit(1);
+        }
     }
 }
