@@ -85,7 +85,7 @@ namespace Crumbs.Api
             return true;
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CrumbsDbContext databaseContext)
         {
             if (env.IsDevelopment())
             {
@@ -98,6 +98,7 @@ namespace Crumbs.Api
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            databaseContext.Database.Migrate();
         }
     }
 }
