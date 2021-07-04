@@ -1,0 +1,4 @@
+### Get all crumbs
+GET {{host}}/crumb HTTP/1.1
+
+
