@@ -1,8 +1,10 @@
 using System;
+using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Security;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace Crumbs.Api
@@ -17,7 +19,7 @@ namespace Crumbs.Api
 
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
-            
+
             Console.OutputEncoding = System.Text.Encoding.Unicode;
         }
 
@@ -25,15 +27,25 @@ namespace Crumbs.Api
         {
             CreateHostBuilder(args).Build().Run();
         }
-        
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                        .ConfigureAppConfiguration(ConfigConfiguration)
+                        .UseStartup<Startup>();
                 });
-        
-        
+
+        static void ConfigConfiguration(WebHostBuilderContext ctx, IConfigurationBuilder config)
+        {
+            config.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{ctx.HostingEnvironment.EnvironmentName}.json", optional: true,
+                    reloadOnChange: true)
+                .AddEnvironmentVariables();
+        }
+
         [SecurityCritical]
         [HandleProcessCorruptedStateExceptions]
         private static void OnUnhandledException(object eventSender, UnhandledExceptionEventArgs exceptionEventArgs)
