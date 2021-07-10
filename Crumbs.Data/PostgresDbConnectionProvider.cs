@@ -6,7 +6,7 @@ namespace Crumbs.Data
 {
     public class PostgresDbConnectionProvider
     {
-        public static ServiceConfiguration _serviceConfiguration;
+        private readonly ServiceConfiguration _serviceConfiguration;
         
         public PostgresDbConnectionProvider(IConfiguration configuration)
         {
@@ -14,7 +14,7 @@ namespace Crumbs.Data
                 .Get<ServiceConfiguration>();
         }
         
-        public static NpgsqlConnection GetDbConnection()
+        public NpgsqlConnection GetDbConnection()
         {
             return new NpgsqlConnection(_serviceConfiguration.Database.ConnectionString);
         }
