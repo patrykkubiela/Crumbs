@@ -63,7 +63,7 @@ namespace Crumbs.Api
             services.AddDbContext<CrumbsDbContext>(o => 
             {
                 o.UseNpgsql(
-                        serviceConfiguration.Database.ConnectionString,
+                        PostgresDbConnectionProvider.GetDbConnectionString(),
                         builder => builder.RemoteCertificateValidationCallback(UserCertificateValidationCallback)
                     )
                     .EnableDetailedErrors()

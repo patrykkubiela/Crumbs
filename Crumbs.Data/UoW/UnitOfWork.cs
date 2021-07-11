@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Crumbs.Data.Interfaces;
 using Crumbs.Data.Models;
 using Crumbs.Data.Repositories;
-using Microsoft.Extensions.Configuration;
 
 namespace Crumbs.Data.UoW
 {
@@ -15,10 +14,10 @@ namespace Crumbs.Data.UoW
         private ICrumbsRepository _crumbsRepository;
         public ICrumbsRepository CrumbsRepository => _crumbsRepository ??= new CrumbsRepository<Crumb>(_connectionProvider);
 
-        public UnitOfWork(CrumbsDbContext dbContext, IConfiguration configuration)
+        public UnitOfWork(CrumbsDbContext dbContext)
         {
             _dbContext = dbContext;
-            _connectionProvider = new PostgresDbConnectionProvider(configuration);
+            _connectionProvider = new PostgresDbConnectionProvider();
         }
         
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken)

@@ -6,17 +6,9 @@ namespace Crumbs.Data
 {
     public class PostgresDbConnectionProvider
     {
-        private readonly ServiceConfiguration _serviceConfiguration;
-        
-        public PostgresDbConnectionProvider(IConfiguration configuration)
-        {
-            _serviceConfiguration = configuration.GetSection(nameof(ServiceConfiguration))
-                .Get<ServiceConfiguration>();
-        }
-        
         public NpgsqlConnection GetDbConnection()
         {
-            return new NpgsqlConnection(_serviceConfiguration.Database.ConnectionString);
+            return new NpgsqlConnection(GetDbConnectionString());
         }
 
         public static string GetDbConnectionString()
@@ -31,9 +23,11 @@ namespace Crumbs.Data
                 Port = databaseUri.Port,
                 Username = userInfo[0],
                 Password = userInfo[1],
-                Database = databaseUri.LocalPath.TrimStart('/'),
-                SslMode = SslMode.Require
+                Database = databaseUri.LocalPath.TrimStart('/')
             };
+
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Testing")
+                builder.SslMode = SslMode.Require;
 
             var bobTheBuilder = builder.ToString();
             return bobTheBuilder;
