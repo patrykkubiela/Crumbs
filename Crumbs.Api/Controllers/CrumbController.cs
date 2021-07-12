@@ -1,5 +1,4 @@
 using Crumbs.Api.Interfaces;
-using Crumbs.Api.Managers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Crumbs.Api.Controllers
