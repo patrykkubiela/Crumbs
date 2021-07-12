@@ -1,4 +1,4 @@
-using Crumbs.Data.Interfaces;
+using Crumbs.Api.Managers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Crumbs.Api.Controllers
@@ -7,17 +7,17 @@ namespace Crumbs.Api.Controllers
     [Route("crumb")]
     public class CrumbController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ICrumbsManager _crumbsManager;
 
-        public CrumbController(IUnitOfWork unitOfWork)
+        public CrumbController(ICrumbsManager crumbsManager)
         {
-            _unitOfWork = unitOfWork;
+            _crumbsManager = crumbsManager;
         }
 
         [HttpGet]
         public IActionResult GetTest()
         {
-            var crumbs = _unitOfWork.CrumbsRepository.GetAllEntities();
+            var crumbs = _crumbsManager.GetAllCrumbs();
             return Ok(crumbs);
         }
     }
