@@ -4,7 +4,7 @@ using Crumbs.Data.Models;
 
 namespace Crumbs.Data.Repositories
 {
-    public class CrumbsRepository<T> : Repository<T>, ICrumbsRepository
+    public class CrumbsRepository<T>: Repository<T>, ICrumbsRepository where T : class
     {
         private readonly PostgresDbConnectionProvider _connectionProvider;
 
@@ -17,6 +17,11 @@ namespace Crumbs.Data.Repositories
         public ICollection<Crumb> GetAllEntities()
         {
             return GetEntities<Crumb>("SELECT * FROM public.\"Crumbs\"");
+        }
+
+        public long InsertCrumb(Crumb crumb)
+        {
+            return InsertEntity(crumb);
         }
     }
 }

@@ -18,5 +18,10 @@ namespace Crumbs.Api.Managers
         {
             return _crumbsRepository.GetAllEntities();
         }
+
+        public long InsertCrumb(Crumb crumb)
+        {
+            return _crumbsRepository.InsertCrumb(crumb);
+        }
     }
 }

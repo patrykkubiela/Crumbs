@@ -1,4 +1,5 @@
 using Crumbs.Api.Interfaces;
+using Crumbs.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Crumbs.Api.Controllers
@@ -19,6 +20,13 @@ namespace Crumbs.Api.Controllers
         {
             var crumbs = _crumbsManager.GetAllCrumbs();
             return Ok(crumbs);
+        }
+
+        [HttpPost]
+        public IActionResult AddCrumb([FromBody] Crumb crumb)
+        {
+            var result = _crumbsManager.InsertCrumb(crumb);
+            return Ok(result);
         }
     }
 }

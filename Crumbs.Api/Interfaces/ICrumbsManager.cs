@@ -6,5 +6,6 @@ namespace Crumbs.Api.Interfaces
     public interface ICrumbsManager
     {
         ICollection<Crumb> GetAllCrumbs();
+        long InsertCrumb(Crumb crumb);
     }
 }
