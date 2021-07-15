@@ -23,6 +23,7 @@ namespace Crumbs.Api.Controllers
         }
 
         [HttpPost]
+        [Route("add")]
         public IActionResult AddCrumb([FromBody] Crumb crumb)
         {
             var result = _crumbsManager.InsertCrumb(crumb);

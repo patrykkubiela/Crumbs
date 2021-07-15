@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net.Security;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using Crumbs.Api.Interfaces;
+using Crumbs.Api.Managers;
 using Crumbs.Data;
 using Crumbs.Data.Interfaces;
 using Crumbs.Data.UoW;
@@ -73,6 +75,7 @@ namespace Crumbs.Api
             services.AddMediatR(loadedAssemblies);
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICrumbsManager, CrumbsManager>();
             
             services.AddSwaggerGen(c =>
             {
