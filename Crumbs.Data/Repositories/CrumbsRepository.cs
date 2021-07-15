@@ -1,27 +1,31 @@
-using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Crumbs.Data.Interfaces;
 using Crumbs.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Crumbs.Data.Repositories
 {
-    public class CrumbsRepository<T>: Repository<T>, ICrumbsRepository where T : class
+    public class CrumbsRepository : ICrumbsRepository
     {
-        private readonly PostgresDbConnectionProvider _connectionProvider;
+        private readonly CrumbsDbContext _crumbsDbContext;
 
-        public CrumbsRepository(PostgresDbConnectionProvider connectionProvider)
-            : base(connectionProvider)
+        public CrumbsRepository(CrumbsDbContext crumbsDbContext)
         {
-            _connectionProvider = connectionProvider;
-        }
-        
-        public ICollection<Crumb> GetAllEntities()
-        {
-            return GetEntities<Crumb>("SELECT * FROM public.\"Crumbs\"");
+            _crumbsDbContext = crumbsDbContext;
         }
 
-        public long InsertCrumb(Crumb crumb)
+        public IQueryable<Crumb> GetAllCrumbs()
         {
-            return InsertEntity(crumb);
+            var allCrumbs = _crumbsDbContext.Crumbs.AsNoTracking();
+            return allCrumbs;
+        }
+
+        public Task<int> InsertCrumb(Crumb crumb)
+        {
+            _crumbsDbContext.Crumbs.AddAsync(crumb);
+            var result = _crumbsDbContext.SaveChangesAsync();
+            return result;
         }
     }
 }

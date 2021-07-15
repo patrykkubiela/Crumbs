@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Crumbs.Data.Models;
 
 namespace Crumbs.Api.Interfaces
 {
     public interface ICrumbsManager
     {
-        ICollection<Crumb> GetAllCrumbs();
-        long InsertCrumb(Crumb crumb);
+        IQueryable<Crumb> GetAllCrumbs();
+        Task<int> InsertCrumb(Crumb crumb);
     }
 }

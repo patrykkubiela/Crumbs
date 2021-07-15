@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Crumbs.Data.Interfaces;
-using Crumbs.Data.Models;
 using Crumbs.Data.Repositories;
 
 namespace Crumbs.Data.UoW
@@ -12,7 +11,7 @@ namespace Crumbs.Data.UoW
         private readonly PostgresDbConnectionProvider _connectionProvider;
 
         private ICrumbsRepository _crumbsRepository;
-        public ICrumbsRepository CrumbsRepository => _crumbsRepository ??= new CrumbsRepository<Crumb>(_connectionProvider);
+        public ICrumbsRepository CrumbsRepository => _crumbsRepository ??= new CrumbsRepository(_dbContext);
 
         public UnitOfWork(CrumbsDbContext dbContext)
         {
