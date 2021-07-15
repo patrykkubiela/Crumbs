@@ -8,7 +8,6 @@ namespace Crumbs.Data.UoW
     public class UnitOfWork : IUnitOfWork
     {
         private readonly CrumbsDbContext _dbContext;
-        private readonly PostgresDbConnectionProvider _connectionProvider;
 
         private ICrumbsRepository _crumbsRepository;
         public ICrumbsRepository CrumbsRepository => _crumbsRepository ??= new CrumbsRepository(_dbContext);
@@ -16,7 +15,6 @@ namespace Crumbs.Data.UoW
         public UnitOfWork(CrumbsDbContext dbContext)
         {
             _dbContext = dbContext;
-            _connectionProvider = new PostgresDbConnectionProvider();
         }
         
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken)

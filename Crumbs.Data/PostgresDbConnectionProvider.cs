@@ -1,16 +1,10 @@
 using System;
-using Microsoft.Extensions.Configuration;
 using Npgsql;
 
 namespace Crumbs.Data
 {
     public class PostgresDbConnectionProvider
     {
-        public NpgsqlConnection GetDbConnection()
-        {
-            return new NpgsqlConnection(GetDbConnectionString());
-        }
-
         public static string GetDbConnectionString()
         {
             var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");

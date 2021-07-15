@@ -57,10 +57,6 @@ namespace Crumbs.Api
                 {
                     o.SerializerSettings.Converters.Add(new StringEnumConverter());
                 });
-
-            var serviceConfiguration = _configuration
-                .GetSection(nameof(ServiceConfiguration))
-                .Get<ServiceConfiguration>();
             
             services.AddDbContext<CrumbsDbContext>(o => 
             {
