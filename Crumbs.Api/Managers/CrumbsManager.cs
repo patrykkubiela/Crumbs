@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Crumbs.Api.BusinessModels;
 using Crumbs.Api.Interfaces;
 using Crumbs.Data.Interfaces;
 using Crumbs.Data.Models;
@@ -14,10 +15,20 @@ namespace Crumbs.Api.Managers
         {
             _crumbsRepository = unitOfWork.CrumbsRepository;
         }
-        
-        public IQueryable<Crumb> GetAllCrumbs()
+
+        public IQueryable<CrumbDto> GetAllCrumbs()
         {
-            return _crumbsRepository.GetAllCrumbs();
+            var crumbsModels = _crumbsRepository.GetAllCrumbs();
+            
+            var result = crumbsModels.Select(c =>
+                new CrumbDto(c.Uuid, c.Observers.ConvertToDtos())
+                {
+                    Name = c.Name,
+                    Description = c.Description,
+                    Type = c.Type
+                });
+
+            return result;
         }
 
         public Task<int> InsertCrumb(Crumb crumb)

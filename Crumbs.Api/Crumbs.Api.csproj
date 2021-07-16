@@ -25,4 +25,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Crumbs.Data\Crumbs.Data.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converters" />
+  </ItemGroup>
 </Project>
