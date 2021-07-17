@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Crumbs.Api.BusinessModels;
 using Crumbs.Api.Interfaces;
@@ -16,18 +17,15 @@ namespace Crumbs.Api.Managers
             _crumbsRepository = unitOfWork.CrumbsRepository;
         }
 
-        public IQueryable<CrumbDto> GetAllCrumbs()
+        public IEnumerable<CrumbDto> GetAllCrumbs()
         {
-            var crumbsModels = _crumbsRepository.GetAllCrumbs();
-            
-            var result = crumbsModels.Select(c =>
-                new CrumbDto(c.Uuid, c.Observers.ConvertToDtos())
-                {
-                    Name = c.Name,
-                    Description = c.Description,
-                    Type = c.Type
-                });
+            var crumbsModels = _crumbsRepository
+                .GetAllCrumbs()
+                .Where(c => c.BroadcasterId == null)
+                .ToList();
 
+            var result = crumbsModels.ConvertToDtos();
+            
             return result;
         }
 

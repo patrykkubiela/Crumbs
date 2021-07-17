@@ -17,7 +17,10 @@ namespace Crumbs.Data.Repositories
 
         public IQueryable<Crumb> GetAllCrumbs()
         {
-            var allCrumbs = _crumbsDbContext.Crumbs.AsNoTracking();
+            var allCrumbs = _crumbsDbContext
+                .Crumbs
+                .Include(c => c.Observers)
+                .AsNoTracking();
             return allCrumbs;
         }
 

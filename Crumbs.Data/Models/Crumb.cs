@@ -6,13 +6,16 @@ namespace Crumbs.Data.Models
 {
     public class Crumb
     {
-        public Crumb()
-        {
-            Uuid = Uuid != Guid.Empty ? Uuid : Guid.NewGuid();
-        }
+        private Guid _uuid;
 
         public long Id { get; set; }
-        public Guid Uuid { get; }
+
+        public Guid Uuid
+        {
+            get => _uuid;
+            set => _uuid = value != Guid.Empty ? value : Guid.NewGuid();
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public CrumbType Type { get; set; }

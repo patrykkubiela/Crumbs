@@ -11,15 +11,20 @@ namespace Crumbs.Api
         {
             return crumbs.Select(c => c.ConvertToDto());
         }
-        
+
         public static CrumbDto ConvertToDto(this Crumb crumb)
         {
-            return new CrumbDto(crumb.Uuid)
+            var crumbDto = new CrumbDto(crumb.Uuid)
             {
                 Name = crumb.Name,
                 Description = crumb.Description,
                 Type = crumb.Type
             };
+
+            if (crumb.Observers != null)
+                crumbDto.Observers = crumb.Observers.ConvertToDtos();
+
+            return crumbDto;
         }
     }
 }
