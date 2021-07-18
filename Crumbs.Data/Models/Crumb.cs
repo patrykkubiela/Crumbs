@@ -19,7 +19,6 @@ namespace Crumbs.Data.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public CrumbType Type { get; set; }
-
         public long? BroadcasterId { get; set; }
         public virtual Crumb Broadcaster { get; set; }
         public virtual ICollection<Crumb> Observers { get; }
