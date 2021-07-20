@@ -10,7 +10,10 @@ namespace Crumbs.Data.UoW
         private readonly CrumbsDbContext _dbContext;
 
         private ICrumbsRepository _crumbsRepository;
+        private IUserRepository _userRepository;
+        
         public ICrumbsRepository CrumbsRepository => _crumbsRepository ??= new CrumbsRepository(_dbContext);
+        public IUserRepository UserRepository => _userRepository ??= new UserRepository(_dbContext);
 
         public UnitOfWork(CrumbsDbContext dbContext)
         {
