@@ -22,5 +22,7 @@ namespace Crumbs.Data.Models
         public long? BroadcasterId { get; set; }
         public virtual Crumb Broadcaster { get; set; }
         public virtual ICollection<Crumb> Observers { get; }
+        public long UserId { get; set; }
+        public virtual User User { get; set; }
     }
 }

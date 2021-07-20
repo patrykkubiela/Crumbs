@@ -11,6 +11,7 @@ namespace Crumbs.Data
         }
 
         public virtual DbSet<Crumb> Crumbs { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +23,11 @@ namespace Crumbs.Data
                 .Entity<Crumb>()
                 .HasMany(e => e.Observers)
                 .WithOne(e => e.Broadcaster);
+
+            modelBuilder
+                .Entity<Crumb>()
+                .HasOne(e => e.User)
+                .WithMany(e => e.Crumbs);
 
             base.OnModelCreating(modelBuilder);
         }
