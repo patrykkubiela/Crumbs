@@ -1,3 +1,4 @@
+using System.Threading;
 using Crumbs.Api.Interfaces;
 using Crumbs.Data.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -28,7 +29,8 @@ namespace Crumbs.Api.Controllers
         [Route("add")]
         public IActionResult AddCrumb([FromBody] Crumb crumb)
         {
-            var result = _crumbsManager.InsertCrumb(crumb);
+            //TODO: fix cancellation token during mediatr implementation
+            var result = _crumbsManager.InsertCrumb(crumb, new CancellationToken(false));
             return Ok(result);
         }
     }

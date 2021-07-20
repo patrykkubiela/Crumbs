@@ -7,6 +7,6 @@ namespace Crumbs.Data.Interfaces
     public interface ICrumbsRepository
     {
         IQueryable<Crumb> GetAllCrumbs();
-        Task<int> InsertCrumb(Crumb crumb);
+        Task<Crumb> InsertCrumb(Crumb crumb);
     }
 }

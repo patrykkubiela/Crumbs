@@ -24,11 +24,10 @@ namespace Crumbs.Data.Repositories
             return allCrumbs;
         }
 
-        public async Task<int> InsertCrumb(Crumb crumb)
+        public async Task<Crumb> InsertCrumb(Crumb crumb)
         {
-            await _crumbsDbContext.Crumbs.AddAsync(crumb);
-            var result = await _crumbsDbContext.SaveChangesAsync();
-            return result;
+            var entity = await _crumbsDbContext.Crumbs.AddAsync(crumb);
+            return entity.Entity;
         }
     }
 }

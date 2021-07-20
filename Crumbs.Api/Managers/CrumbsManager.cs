@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Crumbs.Api.BusinessModels;
 using Crumbs.Api.Interfaces;
@@ -11,9 +12,11 @@ namespace Crumbs.Api.Managers
     public class CrumbsManager : ICrumbsManager
     {
         private readonly ICrumbsRepository _crumbsRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CrumbsManager(IUnitOfWork unitOfWork)
         {
+            _unitOfWork = unitOfWork;
             _crumbsRepository = unitOfWork.CrumbsRepository;
         }
 
@@ -29,9 +32,10 @@ namespace Crumbs.Api.Managers
             return result;
         }
 
-        public Task<int> InsertCrumb(Crumb crumb)
+        public async Task<int> InsertCrumb(Crumb crumb, CancellationToken cancellationToken)
         {
-            return _crumbsRepository.InsertCrumb(crumb);
+            await _crumbsRepository.InsertCrumb(crumb);
+            return await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }
