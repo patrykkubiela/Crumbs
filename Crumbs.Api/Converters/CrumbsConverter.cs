@@ -3,7 +3,7 @@ using System.Linq;
 using Crumbs.Api.BusinessModels;
 using Crumbs.Data.Models;
 
-namespace Crumbs.Api
+namespace Crumbs.Api.Converters
 {
     public static class CrumbsConverter
     {
