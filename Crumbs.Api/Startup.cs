@@ -5,6 +5,7 @@ using System.Net.Security;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Crumbs.Api.Authorization;
 using Crumbs.Api.Interfaces;
 using Crumbs.Api.Managers;
 using Crumbs.Data;
@@ -87,6 +88,7 @@ namespace Crumbs.Api
 
             services.AddMediatR(loadedAssemblies);
 
+            services.AddScoped<IJwtUtils, JwtUtils>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICrumbsManager, CrumbsManager>();
 
@@ -115,6 +117,7 @@ namespace Crumbs.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<JwtMiddleware>();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             databaseContext.Database.Migrate();
         }

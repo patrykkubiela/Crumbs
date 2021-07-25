@@ -1,37 +1,64 @@
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Crumbs.Api.Authorization;
+using Crumbs.Api.Interfaces;
+using Crumbs.Api.Requests;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Crumbs.Api.Controllers
 {
+    [Authorize]
+    [ApiController]
+    [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        [HttpPost]
-        [Route("login")]
-        public IActionResult Login([FromBody] User user)
+        private readonly IUserManager _userManager;
+
+        public UserController(IUserManager userManager)
         {
-            //TODO: Authenticate user with database
-            //if not authenticate return 401 unauthorized
-            //else continue with flow below
+            _userManager = userManager;
+        }
+        
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate(AuthenticateRequest model)
+        {
+            var response = _userManager.Authenticate(model);
+            return Ok(response);
+        }
 
-            //TODO: get claims from db?
-            var claims = new List<Claim>
-            {
-                new Claim("type", "User")
-            };
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public IActionResult Register(RegisterRequest model)
+        {
+            _userManager.Register(model);
+            return Ok(new { message = "Registration successful" });
+        }
 
-            //TODO: where to store symetric key seed?
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("3B*%VbXZ%PWz!4#16q&U?rews$32o623"));
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var users = _userManager.GetAll();
+            return Ok(users);
+        }
 
-            var token = new JwtSecurityToken("http://localhost:5000", "http://localhost:5000", claims,
-                expires: DateTime.Now.AddDays(30),
-                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var user = _userManager.GetById(id);
+            return Ok(user);
+        }
 
-            return new OkObjectResult(new JwtSecurityTokenHandler().WriteToken(token));
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, UpdateRequest model)
+        {
+            _userManager.Update(id, model);
+            return Ok(new { message = "User updated successfully" });
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _userManager.Delete(id);
+            return Ok(new { message = "User deleted successfully" });
         }
     }
 }
