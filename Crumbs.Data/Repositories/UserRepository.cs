@@ -17,12 +17,16 @@ namespace Crumbs.Data.Repositories
 
         public async Task<User> GetUser(string username)
         {
-            return await _crumbsDbContext.Users.SingleAsync(u => u.Username == username);
+            var user = await _crumbsDbContext.Users.SingleAsync(u => u.Username == username);
+            if (user == null) throw new KeyNotFoundException("User not found");
+            return user;
         }
 
         public async Task<User> GetUser(long id)
         {
-            return await _crumbsDbContext.Users.SingleAsync(u => u.Id == id);
+            var user = await _crumbsDbContext.Users.SingleAsync(u => u.Id == id);
+            if (user == null) throw new KeyNotFoundException("User not found");
+            return user;
         }
 
         public async Task<List<User>> GetUsers()
