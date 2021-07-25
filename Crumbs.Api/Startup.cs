@@ -59,22 +59,22 @@ namespace Crumbs.Api
                 .AddControllersAsServices()
                 .AddNewtonsoftJson(o => { o.SerializerSettings.Converters.Add(new StringEnumConverter()); });
 
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidIssuer = "http://localhost:5000",
-                ValidAudience = "http://localhost:5000",
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("3B*%VbXZ%PWz!4#16q&U?rews$32o623")),
-                ClockSkew = TimeSpan.Zero
-            };
-
-            services.AddAuthentication(options => { options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; })
-                .AddJwtBearer(config => { config.TokenValidationParameters = tokenValidationParameters; });
-
-            services.AddAuthorization(config =>
-            {
-                config.AddPolicy("Admin", policy => policy.RequireClaim("type", "Admin"));
-                config.AddPolicy("User", policy => policy.RequireClaim("type", "User"));
-            });
+            // var tokenValidationParameters = new TokenValidationParameters
+            // {
+            //     ValidIssuer = "http://localhost:5000",
+            //     ValidAudience = "http://localhost:5000",
+            //     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("3B*%VbXZ%PWz!4#16q&U?rews$32o623")),
+            //     ClockSkew = TimeSpan.Zero
+            // };
+            //
+            // services.AddAuthentication(options => { options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; })
+            //     .AddJwtBearer(config => { config.TokenValidationParameters = tokenValidationParameters; });
+            //
+            // services.AddAuthorization(config =>
+            // {
+            //     config.AddPolicy("Admin", policy => policy.RequireClaim("type", "Admin"));
+            //     config.AddPolicy("User", policy => policy.RequireClaim("type", "User"));
+            // });
 
             services.AddDbContext<CrumbsDbContext>(o =>
             {
@@ -85,12 +85,14 @@ namespace Crumbs.Api
                     .EnableDetailedErrors()
                     .EnableSensitiveDataLogging();
             });
-
+            
+            services.AddAutoMapper(loadedAssemblies);
             services.AddMediatR(loadedAssemblies);
 
             services.AddScoped<IJwtUtils, JwtUtils>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICrumbsManager, CrumbsManager>();
+            services.AddScoped<IUserManager, UserManager>();
 
             services.AddSwaggerGen(c =>
             {
@@ -116,8 +118,8 @@ namespace Crumbs.Api
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseMiddleware<JwtMiddleware>();
+            // app.UseAuthorization();
+            // app.UseMiddleware<JwtMiddleware>();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             databaseContext.Database.Migrate();
         }

@@ -3,15 +3,17 @@ using System;
 using Crumbs.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Crumbs.Data.Migrations
 {
     [DbContext(typeof(CrumbsDbContext))]
-    partial class CrumbsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210725161752_AddUserTableWithRelationToCrumbs")]
+    partial class AddUserTableWithRelationToCrumbs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
