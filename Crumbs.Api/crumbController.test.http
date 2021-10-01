@@ -4,10 +4,10 @@ Content-Type: application/json
 
 {
   "Uuid":"",
-  "Name":"crumb sample name",
-  "Description":"sample description",
-  "Type":0,
-  "BroadcasterId":null
+  "Name":"crumb sample name21",
+  "Description":"sample description21",
+  "Type":1,
+  "BroadcasterId":1
 }
 
 ###
